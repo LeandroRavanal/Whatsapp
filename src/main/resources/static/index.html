@@ -1,0 +1,154 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Whatsapp</title>
+  <style type="text/css">body {text-align:center;} input {margin:5px;} input[type=submit] {margin-top:15px;} textarea {margin:5px;}</style>
+</head>
+<body>
+  <h2>Whatsapp</h2>
+  <form name="userForm" action="/" method="post" style="display:block">
+    <div>
+      <input type="text" name="name" placeholder="Nombre" maxlength="20" required />
+    </div>
+    <input type="submit" id="userButton" value="Aceptar" onclick="user.exec(); return false;" onsubmit="event.preventDefault(); return false;" />
+  </form>
+  <form name="messageForm" action="/" method="post" style="display:none">
+    <div>
+      <textarea name="text" placeholder="Mensaje" rows="5" cols="80" maxlength="1000" required></textarea>
+    </div>
+    <input type="submit" id="messageButton" value="Enviar" onclick="message.exec(); return false;" onsubmit="event.preventDefault(); return false;" />
+  </form>
+  <div id="messages"></div>
+  <script type="text/javascript">
+  function Forms() {
+    this.userForm = document.querySelector('form[name="userForm"]');
+    this.messageForm = document.querySelector('form[name="messageForm"]');
+  }
+  function User() {
+    this.id;
+    this.token;
+	this.name = document.querySelector('input[name="name"]');
+	this.button = document.querySelector('#userButton');
+  }
+  function Message() {
+    this.text = document.querySelector('textarea[name="text"]');
+    this.button = document.querySelector('#messageButton');
+  }
+  User.prototype.exec = function() {
+    if (!this.valid()) return;
+    
+    this.button.value = 'Procesando...';
+    this.button.disabled = 'disabled';
+
+	this.send();
+  }
+  User.prototype.valid = function() {
+	  return true;
+  }
+  User.prototype.send = function() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/v1/user');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        user.id = xhr.responseText;
+        user.finish();
+      }
+    };    
+    xhr.send(JSON.stringify({'name':this.name.value,'token':this.token}));
+    storage.user = this.name.value;
+  }
+  User.prototype.finish = function() {
+    this.button.value = 'Aceptar';
+    this.button.disabled = '';
+    
+    forms.userForm.style.display = 'none';
+    forms.messageForm.style.display = 'block';
+  }
+  Message.prototype.exec = function() {
+	if (!this.valid()) return;
+	  
+    this.button.value = 'Procesando...';
+    this.button.disabled = 'disabled';
+
+	this.send();
+  }
+  Message.prototype.valid = function() {
+	  return true;
+  }
+  Message.prototype.send = function() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/v1/group/'+group.id+'/user/'+user.id);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+    	showMessage(storage.user+': '+storage.message);
+    	  
+    	message.text.value = '';
+    	message.finish();
+      }
+    };    
+    xhr.send(this.text.value);
+    storage.message = this.text.value;
+  }
+  Message.prototype.finish = function() {
+    this.button.value = 'Enviar';
+    this.button.disabled = '';
+  }
+  var forms = new Forms();
+  var group = {id:'1'};
+  var user = new User();
+  var message = new Message();
+  var storage = {user:'',message:''};
+  
+  function showMessage(message) {
+    let p = document.createElement('p');
+    p.textContent = message;
+    document.querySelector('#messages').appendChild(p);
+  }
+</script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js";
+  import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-messaging.js";
+
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+  const firebaseConfig = {
+    apiKey: "<<apiKey>>",
+    authDomain: "<<authDomain>>",
+    projectId: "<<projectId>>",
+    storageBucket: "<<storageBucket>>",
+    messagingSenderId: "<<messagingSenderId>>",
+    appId: "<<appId>>",
+    measurementId: "<<measurementId>>"
+  };
+
+  // Initialize Firebase
+  const firebaseApp = initializeApp(firebaseConfig);
+
+  // Initialize Firebase Cloud Messaging and get a reference to the service
+  const messaging = getMessaging(firebaseApp);
+  
+  getToken(messaging, { vapidKey: '<<vapidKey>>' }).then((currentToken) => {
+    if (currentToken) {
+      // Send the token to your server and update the UI if necessary
+      user.token = currentToken;
+      console.log(currentToken);
+    } else {
+      // Show permission request UI
+      console.log('No registration token available. Request permission to generate one.');
+    }
+  }).catch((err) => {
+    console.log('An error occurred while retrieving token. ', err);
+  });
+
+  onMessage(messaging, (payload) => {
+    console.log('Notification received. ', payload);
+    showMessage(payload.notification.title+': '+payload.notification.body);
+  });
+</script>
+</body>
+</html>
