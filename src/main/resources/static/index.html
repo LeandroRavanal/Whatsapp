@@ -2,19 +2,21 @@
 <head>
   <meta charset="UTF-8">
   <title>Whatsapp</title>
-  <style type="text/css">body {text-align:center;} input {margin:5px;} input[type=submit] {margin-top:15px;} textarea {margin:5px;}</style>
+  <style type="text/css">body {text-align:center;} input {margin:5px;} input[type=submit] {margin-top:5px;} textarea {margin:5px;} ul {list-style-type:none;margin:5px;padding:0;color:red;}</style>
 </head>
 <body>
   <h2>Whatsapp</h2>
   <form name="userForm" action="/" method="post" style="display:block">
     <div>
       <input type="text" name="name" placeholder="Nombre" maxlength="20" required />
+      <ul id="userErrors"></ul>
     </div>
     <input type="submit" id="userButton" value="Aceptar" onclick="user.exec(); return false;" onsubmit="event.preventDefault(); return false;" />
   </form>
   <form name="messageForm" action="/" method="post" style="display:none">
     <div>
       <textarea name="text" placeholder="Mensaje" rows="5" cols="80" maxlength="1000" required></textarea>
+      <ul id="messageErrors"></ul>
     </div>
     <input type="submit" id="messageButton" value="Enviar" onclick="message.exec(); return false;" onsubmit="event.preventDefault(); return false;" />
   </form>
@@ -23,6 +25,8 @@
   function Forms() {
     this.userForm = document.querySelector('form[name="userForm"]');
     this.messageForm = document.querySelector('form[name="messageForm"]');
+    this.userErrors = document.querySelector('#userErrors');
+    this.messageErrors = document.querySelector('#messageErrors');
   }
   function User() {
     this.id;
@@ -36,14 +40,22 @@
   }
   User.prototype.exec = function() {
     if (!this.valid()) return;
-    
     this.button.value = 'Procesando...';
     this.button.disabled = 'disabled';
-
 	this.send();
   }
   User.prototype.valid = function() {
-	  return true;
+    forms.userErrors.innerHTML = '';
+    let valid = true;
+    if (!/[a-zA-Z0-9_-]{1,20}/.test(this.name.value)) {
+      this.error('Ingrese un nombre válido.');      
+	  valid = false;
+    }
+    if (!this.token) {
+      this.error('El token no está seteado. Habilite el permiso de notificaciones y recargue la página.');
+      valid = false;
+    }
+    return valid;
   }
   User.prototype.send = function() {
     var xhr = new XMLHttpRequest();
@@ -51,30 +63,47 @@
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onreadystatechange = function() {
       if (xhr.readyState === XMLHttpRequest.DONE) {
-        user.id = xhr.responseText;
+        if (!isNaN(xhr.responseText)&&!isNaN(parseInt(xhr.responseText))) {
+    	  user.id = parseInt(xhr.responseText);
+    	  
+          forms.userForm.style.display = 'none';
+          forms.messageForm.style.display = 'block';
+        } else {
+          user.error('Ocurrió un error procesando el usuario.');
+        }
         user.finish();
       }
     };    
     xhr.send(JSON.stringify({'name':this.name.value,'token':this.token}));
     storage.user = this.name.value;
   }
+  User.prototype.error = function(message) {
+    let li = document.createElement('li');
+    li.textContent = message;
+    forms.userErrors.appendChild(li);
+  }
   User.prototype.finish = function() {
     this.button.value = 'Aceptar';
     this.button.disabled = '';
-    
-    forms.userForm.style.display = 'none';
-    forms.messageForm.style.display = 'block';
   }
   Message.prototype.exec = function() {
 	if (!this.valid()) return;
-	  
     this.button.value = 'Procesando...';
     this.button.disabled = 'disabled';
-
 	this.send();
   }
   Message.prototype.valid = function() {
-	  return true;
+    forms.messageErrors.innerHTML = '';
+    let valid = true;
+    if (!user.id) {
+      this.error('El usuario no está seteado.');
+      valid = false;
+    }
+    if (!this.text.value||this.text.value.length>1000) {
+      this.error('Ingrese un mensaje válido.');
+      valid = false;
+    }
+    return valid;
   }
   Message.prototype.send = function() {
     var xhr = new XMLHttpRequest();
@@ -90,6 +119,11 @@
     xhr.send(this.text.value);
     storage.message = this.text.value;
   }
+  Message.prototype.error = function(message) {
+    let li = document.createElement('li');
+    li.textContent = message;
+    forms.messageErrors.appendChild(li);
+  }  
   Message.prototype.finish = function() {
     this.button.value = 'Enviar';
     this.button.disabled = '';
