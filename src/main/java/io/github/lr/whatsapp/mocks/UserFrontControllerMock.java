@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import io.github.lr.whatsapp.domain.User;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Mock punto de entrada para el almacenamiento de usuario.
+ * 
+ * @author lravanal
+ *
+ */
 @Slf4j
 @Validated
 @RestController

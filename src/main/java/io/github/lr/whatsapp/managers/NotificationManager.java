@@ -17,6 +17,12 @@ import io.github.lr.whatsapp.repositories.GroupRepository;
 import io.github.lr.whatsapp.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Administrador encargado de la notificacion del mensaje para cada integrante del grupo. Realiza validaciones de dominio.
+ * 
+ * @author lravanal
+ *
+ */
 @Slf4j
 @Component
 @ConditionalOnProperty(value="app.notification-sender", havingValue="true")

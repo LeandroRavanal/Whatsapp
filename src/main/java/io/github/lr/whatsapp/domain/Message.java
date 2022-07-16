@@ -6,6 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Entidad Mensaje. Asocia el id usuario con el texto del mensaje.
+ * 
+ * @author lravanal
+ *
+ */
 @Getter
 @ToString
 @NoArgsConstructor

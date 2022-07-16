@@ -22,6 +22,12 @@ import io.github.lr.whatsapp.managers.MessageManager;
 import io.github.lr.whatsapp.repositories.GroupRepository;
 import io.github.lr.whatsapp.repositories.UserRepository;
 
+/**
+ * Test de validaciones de dominio asociadas al administrador de mensaje de grupo.
+ * 
+ * @author lravanal
+ *
+ */
 @ExtendWith(SpringExtension.class)
 @EnableAutoConfiguration
 @ComponentScan(basePackages={"io.github.lr.whatsapp.managers", "io.github.lr.whatsapp.repositories"})

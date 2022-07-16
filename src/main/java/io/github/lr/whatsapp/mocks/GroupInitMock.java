@@ -9,6 +9,12 @@ import io.github.lr.whatsapp.domain.Group;
 import io.github.lr.whatsapp.repositories.GroupRepository;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Mock de almacenamiento para grupo unico.
+ * 
+ * @author lravanal
+ *
+ */
 @Slf4j
 @Component
 public class GroupInitMock {

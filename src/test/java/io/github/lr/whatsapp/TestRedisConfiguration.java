@@ -8,6 +8,12 @@ import org.springframework.boot.test.context.TestConfiguration;
 
 import redis.embedded.RedisServer;
 
+/**
+ * Configuracion de la cache embebida.
+ * 
+ * @author lravanal
+ *
+ */
 @TestConfiguration
 public class TestRedisConfiguration {
 

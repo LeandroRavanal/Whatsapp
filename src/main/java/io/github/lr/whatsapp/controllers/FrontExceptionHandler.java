@@ -13,6 +13,12 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+/**
+ * Manejador de excepciones para las respuestas HTTP.
+ * 
+ * @author lravanal
+ *
+ */
 @ControllerAdvice
 @ConditionalOnProperty(value="app.front-controller", havingValue="true")
 public class FrontExceptionHandler extends ResponseEntityExceptionHandler {

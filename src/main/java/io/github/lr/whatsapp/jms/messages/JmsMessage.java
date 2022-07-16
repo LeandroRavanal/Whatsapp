@@ -6,6 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Entidad mensaje de grupo JMS.
+ * 
+ * @author lravanal
+ *
+ */
 @Getter
 @ToString
 @NoArgsConstructor

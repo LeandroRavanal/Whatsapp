@@ -12,6 +12,12 @@ import io.github.lr.whatsapp.repositories.GroupRepository;
 import io.github.lr.whatsapp.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
+ /**
+ * Mock para el almacenamiento (o actualizacion) de usuario en el grupo unico.
+ * 
+ * @author lravanal
+ *
+ */
 @Slf4j
 @Component
 @ConditionalOnProperty(value="app.front-controller", havingValue="true")

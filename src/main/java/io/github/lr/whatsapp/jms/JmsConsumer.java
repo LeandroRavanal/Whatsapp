@@ -9,6 +9,12 @@ import io.github.lr.whatsapp.jms.messages.JmsMessage;
 import io.github.lr.whatsapp.managers.NotificationManager;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Consumidor de mensajes de grupo JMS.
+ * 
+ * @author lravanal
+ *
+ */
 @Slf4j
 @Component
 @ConditionalOnProperty(value="app.notification-sender", havingValue="true")

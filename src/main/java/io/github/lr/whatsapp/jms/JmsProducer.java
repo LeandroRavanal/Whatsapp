@@ -8,6 +8,12 @@ import org.springframework.stereotype.Component;
 import io.github.lr.whatsapp.jms.messages.JmsMessage;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Productor de mensajes de grupo JMS.  
+ * 
+ * @author lravanal
+ *
+ */
 @Slf4j
 @Component
 @ConditionalOnProperty(value="app.front-controller", havingValue="true")

@@ -13,6 +13,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Entidad Grupo. Almacena los ids de usuarios y los mensajes.
+ * 
+ * @author lravanal
+ *
+ */
 @Getter
 @ToString
 @NoArgsConstructor

@@ -13,6 +13,12 @@ import io.github.lr.whatsapp.repositories.GroupRepository;
 import io.github.lr.whatsapp.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Administrador encargado de la publicacion interna del mensaje de grupo. Realiza validaciones de dominio. Agrega el mensaje en el repositorio.
+ * 
+ * @author lravanal
+ *
+ */
 @Slf4j
 @Component
 @ConditionalOnProperty(value="app.front-controller", havingValue="true")

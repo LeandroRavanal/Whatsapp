@@ -6,6 +6,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
+/**
+ * Configuracion de la cache (redis).
+ * 
+ * @author lravanal
+ *
+ */
 @Configuration
 public class CacheConfiguration {
 	

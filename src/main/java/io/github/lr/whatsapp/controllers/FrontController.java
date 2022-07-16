@@ -20,6 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 import io.github.lr.whatsapp.managers.MessageManager;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Punto de entrada de la publicacion de mensaje de grupo. Contiene las validaciones correspondientes de cada parametro.
+ * 
+ * @author lravanal
+ *
+ */
 @Slf4j
 @Validated
 @RestController

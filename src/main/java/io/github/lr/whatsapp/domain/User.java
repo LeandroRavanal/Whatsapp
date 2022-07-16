@@ -15,6 +15,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Entidad Usuario. Almacena el token firebase del usuario.
+ * 
+ * @author lravanal
+ *
+ */
 @Getter
 @ToString
 @NoArgsConstructor
